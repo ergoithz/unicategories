@@ -68,6 +68,8 @@ def load_from_cache(path=user_path):
     :returns: category ranges dict or None
     :rtype: None or dict of RangeGroup
     '''
+    if not path:
+        return
     try:
         with open(path, 'rb') as f:
             dversion, mversion, data = pickle.load(f)
@@ -87,6 +89,8 @@ def generate_and_cache(path=user_path):
     :rtype: dict of RangeGroup
     '''
     data = tools.generate()
+    if not path:
+        return data
     try:
         directory = os.path.dirname(path)
         if not os.path.exists(directory):
