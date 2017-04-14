@@ -4,25 +4,24 @@ from distutils import log
 from distutils.core import Command
 
 
-class create_content(Command):
-    '''Distutils subcommand to generate package data'''
+class install_cache(Command):
+    '''Distutils subcommand to generate and install package cache'''
 
-    description = 'Generate and install package data'
+    description = 'Generate and install package cache'
 
-    user_options = []
+    user_options = [
+        ('install-dir=', 'd', "directory to install to"),
+    ]
 
     def initialize_options(self):
         self.install_dir = None
-        self.package_content = None
         self.outfiles = []
 
     def finalize_options(self):
         self.set_undefined_options(
-            'install',
-            ('install_lib', 'install_dir'),
+            'install_lib',
+            ('install_dir', 'install_dir')
             )
-
-        self.packages = self.distribution.packages
         self.package_content = self.distribution.package_content
 
     def run(self):
@@ -33,7 +32,9 @@ class create_content(Command):
                 if base and not os.path.exists(base):
                     os.makedirs(base)
                 abspath = os.path.join(self.install_dir, package, path)
-                fnc(abspath)
+                print(abspath)
+                if not self.dry_run:
+                    fnc(abspath)
                 self.outfiles.append(abspath)
 
     def get_inputs(self):

@@ -4,19 +4,19 @@ import sys
 from setuptools.command.install import install as BaseInstall
 from setuptools.dist import Distribution as BaseDistribution
 
-from .content import create_content
+from .cache import install_cache
 
 
 class install(BaseInstall):
     sub_commands = BaseInstall.sub_commands + [
-        ('create_content', None),
+        ('install_cache', None),
         ]
 
 
 class Distribution(BaseDistribution):
     default_cmdclass = {
         'install': install,
-        'create_content': create_content,
+        'install_cache': install_cache,
         }
 
     package_content = None
