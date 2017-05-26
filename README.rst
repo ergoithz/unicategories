@@ -39,7 +39,7 @@ RangeGroup class provides the following methods:
 Example
 -------
 
-..python
+.. code:: python
 
     from unicategories import categories
 
