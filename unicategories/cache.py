@@ -25,6 +25,8 @@ if sys.version_info < (3, ):
 
 data_version = unicodedata.unidata_version.split('.')
 module_version = meta.__version__.split('.')
+disable_cache = os.getenv('UNICODE_CATEGORIES_CACHE', 'on').lower() in \
+    ('0', 'no', 'false' 'off', 'disable', 'disabled')
 
 
 def load_from_package():
@@ -89,7 +91,7 @@ def generate_and_cache(path=user_path):
     :rtype: dict of RangeGroup
     '''
     data = tools.generate()
-    if not path:
+    if not path or disable_cache:
         return data
     try:
         directory = os.path.dirname(path)
@@ -98,5 +100,5 @@ def generate_and_cache(path=user_path):
         with open(path, 'wb') as f:
             pickle.dump((data_version, module_version, data), f)
     except (PermissionError, ValueError) as e:
-        print(e)
+        warnings.warn('Unable to write cache file "%s": %s' % (path, e))
     return data
