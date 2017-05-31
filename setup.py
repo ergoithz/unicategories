@@ -13,6 +13,10 @@ License
 MIT (see LICENSE file).
 """
 
+# avoid issues with broken easy_install scripts (hi appveyor!)
+import os
+os.environ['UNICODE_CATEGORIES_CACHE'] = 'off'  # noqa
+
 from setuptools import setup
 from cache_setup import Distribution
 

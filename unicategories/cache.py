@@ -10,12 +10,17 @@ from . import tools
 
 try:
     import appdirs
-    user_path = '%s-cache.bin' % appdirs.user_cache_dir(
-        meta.__app__,
-        version='%s-%s' % (
-            meta.__version__,
-            unicodedata.unidata_version
-            ))
+    if (
+      # UNICODE_CATEGORIES_CACHE (enabled by default)
+      (os.getenv('UNICODE_CATEGORIES_CACHE', '').lower() or '1')
+      in ('1', 'yes', 'true' 'on', 'enable', 'enabled')
+      ):
+        user_path = '%s-cache.bin' % appdirs.user_cache_dir(
+            meta.__app__,
+            version='%s-%s' % (
+                meta.__version__,
+                unicodedata.unidata_version
+                ))
 except ImportError:
     user_path = None
 
@@ -25,8 +30,6 @@ if sys.version_info < (3, ):
 
 data_version = unicodedata.unidata_version.split('.')
 module_version = meta.__version__.split('.')
-disable_cache = os.getenv('UNICODE_CATEGORIES_CACHE', 'on').lower() in \
-    ('0', 'no', 'false' 'off', 'disable', 'disabled')
 
 
 def load_from_package():
@@ -91,7 +94,7 @@ def generate_and_cache(path=user_path):
     :rtype: dict of RangeGroup
     '''
     data = tools.generate()
-    if not path or disable_cache:
+    if not path:
         return data
     try:
         directory = os.path.dirname(path)
