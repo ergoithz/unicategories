@@ -10,6 +10,7 @@ from . import tools
 
 try:
     import appdirs
+    user_path = None
     if (
       # UNICODE_CATEGORIES_CACHE (enabled by default)
       (os.getenv('UNICODE_CATEGORIES_CACHE', '').lower() or '1')
