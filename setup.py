@@ -15,6 +15,7 @@ MIT (see LICENSE file).
 
 # avoid issues with broken easy_install scripts (hi appveyor!)
 import os
+import codecs
 os.environ['UNICODE_CATEGORIES_CACHE'] = 'off'  # noqa
 
 from setuptools import setup
@@ -27,7 +28,7 @@ meta_app = meta.__app__
 meta_version = meta.__version__
 meta_license = meta.__license__
 
-with open('README.rst') as f:
+with codecs.open('README.rst', encoding='utf-8') as f:
     meta_doc = f.read()
 
 setup(
